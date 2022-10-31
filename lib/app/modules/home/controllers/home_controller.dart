@@ -31,7 +31,7 @@ class HomeController extends GetxController {
       await newsCacheImpl.saveNews(news);
     } else {
       var news = await newsCacheImpl.getNews();
-      newsList(news);
+      if (news != NewsResponse.empty()) newsList(news);
     }
     newsLoading(false);
   }

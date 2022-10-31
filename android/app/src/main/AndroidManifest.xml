@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sudarshan.iqnet">
+    <uses-permission android:name="android.permission.INTERNET" /> 
    <application
         android:label="iqnet"
         android:name="${applicationName}"

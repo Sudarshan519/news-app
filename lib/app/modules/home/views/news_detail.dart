@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:iqnet/app/modules/home/news_model.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class NewsDetail extends StatelessWidget {
   const NewsDetail({Key? key, required this.article}) : super(key: key);
@@ -12,24 +11,16 @@ class NewsDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //     // title: Text(article.title!),
-      //     ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      icon: const Icon(Icons.arrow_back_ios)),
-                  // const Spacer(),
-                ],
-              ),
+              IconButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  icon: const Icon(Icons.arrow_back_ios)),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(article.title!,
@@ -79,8 +70,8 @@ class NewsDetail extends StatelessWidget {
                       forceWebView: true,
                       enableJavaScript: true,
                     );
-                    // if (await canLaunchUrlString(article.url!)) {
-                    //   await launchUrlString(article.url!,
+                    // if (await canLaunchUrl(Uri.parse(article.url!))) {
+                    //   await launchUrl(Uri.parse(article.url!),
                     //       mode: LaunchMode.inAppWebView);
                     // }
                   },

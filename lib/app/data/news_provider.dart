@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 import '../modules/home/news_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class NewsProvider extends GetConnect {
   @override
@@ -17,9 +18,10 @@ class NewsProvider extends GetConnect {
 
   Future<NewsResponse?> getNewsHeadlines() async {
     var url = 'top-headlines/?country=us';
+
     var headersList = {
       'Accept': '*/*',
-      'x-api-key': '839d12bedd95422aa04f816b45d79abc'
+      'x-api-key': "${dotenv.env['API_KEY']}"
     };
     try {
       var req = await get(url, headers: headersList);
@@ -27,7 +29,7 @@ class NewsProvider extends GetConnect {
         return req.body;
       } else {
         if (kDebugMode) {
-          print(req..bodyString);
+          print(req.bodyString);
         }
       }
       return null;

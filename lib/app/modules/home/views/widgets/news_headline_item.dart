@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iqnet/app/modules/home/news_model.dart';
+import 'package:iqnet/app/modules/home/news_model.dart'; 
 
 import '../news_detail.dart';
 
@@ -10,7 +10,7 @@ class NewsHeadline extends StatelessWidget {
   final Articles article;
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () {
         Get.to(
             () => NewsDetail(
@@ -60,6 +60,14 @@ class NewsHeadline extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
+          TextButton(
+              onPressed: null,
+              child: Text(
+                'View Detail',
+                style: TextStyle(
+                    color: Theme.of(context).buttonTheme.colorScheme!.primary),
+              )),
+          const Divider(),
           const SizedBox(
             height: 16,
           ),

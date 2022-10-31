@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:iqnet/app/modules/home/news_model.dart';
 
@@ -8,7 +9,7 @@ class NewsCacheImpl {
   Future<NewsResponse?> getNews() async {
     var news = await getStorage.read('cacheNews');
     if (news == null) {
-      return NewsResponse.empty();
+      return null;
     } else {
       return NewsResponse.fromJson(jsonDecode(news));
     }
@@ -17,7 +18,15 @@ class NewsCacheImpl {
   Future<void> saveNews(NewsResponse newsResponse) async {
     try {
       getStorage.write('cacheNews', jsonEncode(newsResponse.toJson()));
-    } catch (e) {}
+    } catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
+    }
     // print("news saved");
+  }
+
+  Future<void> clearStorage() async {
+    getStorage.erase();
   }
 }
