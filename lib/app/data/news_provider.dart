@@ -1,5 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:iqnet/app/data/network/failure.dart';
 
 import '../modules/home/news_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -14,6 +19,34 @@ class NewsProvider extends GetConnect {
       }
     };
     httpClient.baseUrl = 'https://newsapi.org/v2/';
+  }
+
+  Future<Either<Failure, NewsResponse>> getNews(int page) async {
+    var url = "everything/?q=bitcoin&page=$page&pageSize=10";
+
+    var headersList = {
+      'Accept': '*/*',
+      'x-api-key': "${dotenv.env['API_KEY']}"
+    };
+    try {
+      var req = await get(url, headers: headersList);
+
+      if (req.statusCode! >= 200 && req.statusCode! < 300) {
+        return Right(req.body);
+      } else {
+        if (kDebugMode) {
+          print(req.bodyString);
+        }
+        return Left(
+            Failure(req.statusCode!, jsonDecode(req.bodyString!)['message']));
+      }
+    } on SocketException catch (e) {
+      if (kDebugMode) print(e.message);
+      return Left(Failure(e.port!, e.message));
+    } catch (e) {
+      if (kDebugMode) print(e.toString());
+      return Left(DefaultFailure());
+    }
   }
 
   Future<NewsResponse?> getNewsHeadlines() async {
