@@ -11,6 +11,7 @@ Flutter News Application using getx provider
 - API Integration
 
 # Build Process
+Get your api key from https://newsapi.org and add it inside .env with API_KEY=<Your Key> as shown in .env.example
 ## Debug 
 flutter run --debug
 ## Profile 
