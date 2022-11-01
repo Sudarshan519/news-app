@@ -1,4 +1,4 @@
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iqnet/app/data/local_impl/local_impl.dart';
@@ -33,17 +33,20 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     _isDarkMode(Get.isDarkMode);
-    scrollListener();
     fetchNews();
+    scrollListener();
   }
 
   // Infinite Scroll to Page
   scrollListener() {
     scrollController.addListener(() {
-      if (newsLoading.value != true || moreNews.value != true) {
+      if (newsLoading.isFalse || moreNews.isFalse) {
         if (scrollController.position.pixels ==
             scrollController.position.maxScrollExtent) {
-          if (endofPage.isFalse) fetchNews();
+          // print(scrollController.position.pixels);
+          // print(scrollController
+          //     .position.maxScrollExtent); // if (endofPage.isFalse)
+          fetchNews();
         }
       }
     });
@@ -54,32 +57,37 @@ class HomeController extends GetxController {
     if (pageCount > 1 && endofPage.isFalse) {
       moreNews(true);
       // var news = await newsProvider.getNewsHeadlines();
-
       var result = await newsProvider.getNews(pageCount);
       moreNews(false);
       result.fold((failure) {
-        decrement();
         Get.rawSnackbar(message: failure.message);
       }, (news) {
-        if (news.articles!.length == 10) {
+        if (news.articles!.length == 20) {
           increment();
           newsList.value.articles!.addAll(news.articles!);
+          // newsCacheImpl.saveNews(newsResponse);
+
         } else {
           endofPage(true);
         }
       });
     } else {
       newsLoading(true);
+
       // var news = await newsProvider.getNewsHeadlines(pageCount);
       var result = await newsProvider.getNews(pageCount);
       newsLoading(false);
       result.fold((failure) async {
         var news = await newsCacheImpl.getNews();
         endofPage(true);
-        increment();
+
         if (news != NewsResponse.empty()) newsList(news);
         Get.rawSnackbar(message: failure.message);
-      }, (news) => newsList.value.articles!.addAll(news.articles!));
+      }, (news) {
+        newsCacheImpl.saveNews(news);
+        increment();
+        newsList(news);
+      });
     }
   }
 

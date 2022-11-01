@@ -22,15 +22,16 @@ class NewsProvider extends GetConnect {
   }
 
   Future<Either<Failure, NewsResponse>> getNews(int page) async {
-    var url = "everything/?q=bitcoin&page=$page&pageSize=10";
-
+    print('page' + page.toString());
+    var url = "everything/?q=bitcoin&page=$page&pageSize=20";
+    print(url);
     var headersList = {
       'Accept': '*/*',
       'x-api-key': "${dotenv.env['API_KEY']}"
     };
     try {
       var req = await get(url, headers: headersList);
-
+      print(req.body);
       if (req.statusCode! >= 200 && req.statusCode! < 300) {
         return Right(req.body);
       } else {

@@ -23,7 +23,7 @@ class NewsCacheImpl {
         print(e.toString());
       }
     }
-    // print("news saved");
+    print("news saved");
   }
 
   Future<void> clearStorage() async {
