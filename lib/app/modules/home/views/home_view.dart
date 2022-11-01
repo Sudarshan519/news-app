@@ -30,11 +30,15 @@ class HomeView extends GetView<HomeController> {
                       await controller.refreshNews();
                     },
                     child: SingleChildScrollView(
+                      physics: BouncingScrollPhysics(),
+                      controller: controller.scrollController,
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             ...controller.newsResponse.articles!.map(
                                 (article) => NewsHeadline(article: article)),
+                            if (controller.moreNews.isTrue)
+                              const CircularProgressIndicator(),
                           ]),
                     ),
                   )

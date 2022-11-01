@@ -2,7 +2,7 @@
     package="com.sudarshan.iqnet">
     <uses-permission android:name="android.permission.INTERNET" /> 
    <application
-        android:label="iqnet"
+        android:label="NewsApp"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

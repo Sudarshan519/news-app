@@ -16,7 +16,7 @@ class NewsResponse {
     }
   }
   factory NewsResponse.empty() {
-    return NewsResponse(articles: [], totalResults: 0, status: "Failure");
+    return NewsResponse(articles: [], totalResults: 0, status: "ok");
   }
 
   Map<String, dynamic> toJson() {
