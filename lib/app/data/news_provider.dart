@@ -49,8 +49,8 @@ class NewsProvider extends GetConnect {
     }
   }
 
-  Future<NewsResponse?> getNewsHeadlines() async {
-    var url = 'top-headlines/?country=us';
+  Future<Either<Failure, NewsResponse>> getNewsHeadlines(int page) async {
+    var url = 'top-headlines/?country=us&page=$page&pageSize=10';
 
     var headersList = {
       'Accept': '*/*',
@@ -64,13 +64,12 @@ class NewsProvider extends GetConnect {
         if (kDebugMode) {
           print(req.bodyString);
         }
+        return Left(
+            Failure(req.statusCode!, jsonDecode(req.bodyString!)['message']));
       }
-      return null;
     } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
+      if (kDebugMode) print(e.toString());
+      return Left(DefaultFailure());
     }
-    return null;
   }
 }

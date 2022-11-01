@@ -73,13 +73,13 @@ class HomeController extends GetxController {
         }
       });
     } else {
-      // newsLoading(true);
-      // var news = await newsProvider.getNewsHeadlines();
+      newsLoading(true);
+      // var news = await newsProvider.getNewsHeadlines(pageCount);
       var news = await newsProvider.getNews(pageCount);
-      // newsLoading(false);
+      newsLoading(false);
       news.fold((failure) async {
-        decrement();
         var news = await newsCacheImpl.getNews();
+        increment();
         if (news != NewsResponse.empty()) newsList(news);
         Get.rawSnackbar(message: failure.message);
       }, (news) => newsList.value.articles!.addAll(news.articles!));
