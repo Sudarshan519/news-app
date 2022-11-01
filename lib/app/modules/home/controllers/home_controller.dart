@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iqnet/app/data/local_impl/local_impl.dart';
@@ -6,8 +6,6 @@ import 'package:iqnet/app/data/news_provider.dart';
 import 'package:iqnet/app/modules/home/news_model.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
-
   /// Infinite Scroll
   final scrollController = ScrollController();
   final _pageCount = 1.obs;
@@ -27,6 +25,8 @@ class HomeController extends GetxController {
 
   /// last page
   var endofPage = false.obs;
+
+  /// service implementation
   final NewsCacheImpl newsCacheImpl = Get.find();
   final NewsProvider newsProvider = Get.find();
   @override
@@ -43,11 +43,7 @@ class HomeController extends GetxController {
       if (newsLoading.value != true || moreNews.value != true) {
         if (scrollController.position.pixels ==
             scrollController.position.maxScrollExtent) {
-          increment();
-          fetchNews();
-          if (kDebugMode) {
-            print(pageCount);
-          }
+          if (endofPage.isFalse) fetchNews();
         }
       }
     });
@@ -55,7 +51,7 @@ class HomeController extends GetxController {
 
   /// fetch news from api
   fetchNews() async {
-    if (pageCount > 1 && endofPage.isTrue) {
+    if (pageCount > 1 && endofPage.isFalse) {
       moreNews(true);
       // var news = await newsProvider.getNewsHeadlines();
 
@@ -75,10 +71,11 @@ class HomeController extends GetxController {
     } else {
       newsLoading(true);
       // var news = await newsProvider.getNewsHeadlines(pageCount);
-      var news = await newsProvider.getNews(pageCount);
+      var result = await newsProvider.getNews(pageCount);
       newsLoading(false);
-      news.fold((failure) async {
+      result.fold((failure) async {
         var news = await newsCacheImpl.getNews();
+        endofPage(true);
         increment();
         if (news != NewsResponse.empty()) newsList(news);
         Get.rawSnackbar(message: failure.message);

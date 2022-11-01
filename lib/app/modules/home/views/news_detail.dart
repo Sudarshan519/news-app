@@ -64,15 +64,15 @@ class NewsDetail extends StatelessWidget {
               ),
               TextButton(
                   onPressed: () async {
-                    await launch(
-                      article.url!,
-                      forceSafariVC: true,
-                      forceWebView: true,
-                      enableJavaScript: true,
-                    );
+                    // await launch(
+                    //   article.url!,
+                    //   forceSafariVC: true,
+                    //   forceWebView: true,
+                    //   enableJavaScript: true,
+                    // );
                     // if (await canLaunchUrl(Uri.parse(article.url!))) {
-                    //   await launchUrl(Uri.parse(article.url!),
-                    //       mode: LaunchMode.inAppWebView);
+                    await launchUrl(Uri.parse(article.url!),
+                        mode: LaunchMode.platformDefault);
                     // }
                   },
                   child: const Text('View Full Article')),

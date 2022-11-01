@@ -16,9 +16,8 @@ void main() async {
       debugShowCheckedModeBanner: false,
       getPages: AppPages.routes,
       theme: ThemeData.light(),
-
       darkTheme: ThemeData.dark(),
-      // themeMode: ThemeMode.system,
+      themeMode: ThemeMode.light,
     ),
   );
 }
